@@ -1,0 +1,35 @@
+{
+	"name": "twitter-interaction-circle",
+	"description": "Create an Interaction Circle for your Twitter",
+	"version": "1.0.0",
+	"main": "src/index.js",
+	"license": "MIT",
+	"author": {
+		"name": "Simone Masiero",
+		"email": "simone@duiker101.net",
+		"url": "hackertyper.net"
+	},
+	"repository": {
+		"url": "https://github.com/duiker101/twitter-interaction-circles"
+	},
+	"scripts": {
+		"build": "node ./src/index.js",
+		"dev": "DEBUG=true node ./src/index.js"
+	},
+	"dependencies": {
+		"canvas": "^2.6.1",
+		"twitter-lite": "^0.14.0"
+	},
+	"devDependencies": {
+		"prettier": "^2.0.5",
+		"dotenv": "^8.2.0",
+		"@types/node": "^14.0.13"
+	},
+	"keywords": [
+		"twitter",
+		"interaction",
+		"circle",
+		"node",
+		"canvas"
+	]
+}
