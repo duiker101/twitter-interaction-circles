@@ -22,6 +22,12 @@ Run with
 yarn build
 ```
 
+You can also generate a text version of the image with the complete list of the presented users with the following command
+```shell script
+yarn build --text
+```
+The output will go in `users.txt` file in the root of the project
+
 ## Setup
 To use the project you will need Twitter API keys. You can get one on the [developer portal](https://developer.twitter.com).
 
@@ -35,6 +41,11 @@ ACCESS_TOKEN_SECRET=DDDDD
 ```
 
 Make sure you don't have spaces.
+
+## Modifications
+
+If you wish, you can replace the first part of the main loop in the `index.js` to use the getUser() function instead of getMe().
+This will allow you to generate the circles for any public Twitter user. All the API methods used take advantage only of public data.
 
 ## Challenges
 
