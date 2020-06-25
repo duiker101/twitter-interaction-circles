@@ -51,7 +51,11 @@ module.exports = async function render(config) {
 			ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
 			ctx.clip();
 
-			const img = await loadImage(users[i].avatar);
+			const defaultAvatarUrl =
+				"https://abs.twimg.com/sticky/default_profile_images/default_profile_200x200.png";
+			const avatarUrl = users[i].avatar || defaultAvatarUrl;
+
+			const img = await loadImage(avatarUrl);
 			ctx.drawImage(
 				img,
 				centerX - radius,
