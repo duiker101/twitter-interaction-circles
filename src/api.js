@@ -1,21 +1,3 @@
-const Twitter = require("twitter-lite");
-
-/**
- * The environment variable are provided by the dotenv via the .env file
- */
-const dotenv = require("dotenv");
-dotenv.config();
-
-/**
- * Create an instance of the API Client that we will use.
- * @type {Twitter}
- */
-const client = new Twitter({
-	consumer_key: process.env.CONSUMER_KEY,
-	consumer_secret: process.env.CONSUMER_SECRET,
-	access_token_key: process.env.ACCESS_TOKEN_KEY,
-	access_token_secret: process.env.ACCESS_TOKEN_SECRET,
-});
 
 /**
  * Fetch a single page of the timeline
@@ -32,7 +14,7 @@ async function getTimelinePage(screen_name, page, max_id = null) {
 	};
 
 	console.log("Fetching Timeline page " + page);
-	const res = await client.get("statuses/user_timeline", params);
+	const res = await globalThis.TwitterClient.get("statuses/user_timeline", params);
 	return res;
 }
 
@@ -71,7 +53,7 @@ async function getLikedPage(screen_name, page, max_id = null) {
 	};
 
 	console.log("Fetching Liked page " + page);
-	const res = await client.get("favorites/list", params);
+	const res = await globalThis.TwitterClient.get("favorites/list", params);
 	return res;
 }
 
@@ -107,7 +89,7 @@ async function getAvatars(ids) {
 
 	console.log("Fetching avatars " + ids.length);
 
-	const res = await client.get("users/lookup", params);
+	const res = await globalThis.TwitterClient.get("users/lookup", params);
 
 	return Object.fromEntries(
 		res.map((user) => [
@@ -115,21 +97,6 @@ async function getAvatars(ids) {
 			user.profile_image_url_https.replace("normal", "400x400"),
 		])
 	);
-}
-
-/**
- * Return informations about the currently logged in user
- * @returns {Promise<{screen_name: string, id: string, avatar: string}>}
- */
-async function getMe() {
-	console.log("Fetching me");
-	const res = await client.get("account/verify_credentials");
-
-	return {
-		id: res.id_str,
-		screen_name: res.screen_name,
-		avatar: res.profile_image_url_https.replace("normal", "400x400"),
-	};
 }
 
 /**
@@ -143,7 +110,7 @@ async function getUser(screen_name) {
 	};
 
 	console.log("Fetching user " + screen_name);
-	const res = (await client.get("users/lookup", params))[0];
+	const res = (await globalThis.TwitterClient.get("users/lookup", params))[0];
 
 	return {
 		id: res.id_str,
@@ -156,6 +123,5 @@ module.exports = {
 	getLiked,
 	getTimeline,
 	getAvatars,
-	getMe,
 	getUser
 };

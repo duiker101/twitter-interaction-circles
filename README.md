@@ -9,7 +9,6 @@ The concept is easy and straightforward but the realization encompasses a lot of
 
 You can read more about the realization of this project on the [HackerTyper Blog](https://blog.hackertyper.net/post/twitter-interaction-circles-guide/)
 
-
 ## Installation
 ```shell script
 git clone git@github.com:duiker101/twitter-interaction-circle.git
@@ -31,13 +30,15 @@ The output will go in `users.txt` file in the root of the project
 ## Setup
 To use the project you will need Twitter API keys. You can get one on the [developer portal](https://developer.twitter.com).
 
-Once you have them, rename the `.env.example` file `.env` and put them in there, it should look like this:
+As this project uses only public data, you don't need an authorization key, but you can generate a Bearer Token. This will prevent you from fetching any private data but will grant you slightly higher rate limiting.
+
+More information about Twitter's bearer tokens can be found [here](https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0)
+
+Once you have your consumer keys, rename the `.env.example` file `.env` and put them in there, it should look like this:
 
 ```dotenv
-CONSUMER_KEY=AAAAAAA
-CONSUMER_SECRET=BBBBBBB
-ACCESS_TOKEN_KEY=CCCCCCC
-ACCESS_TOKEN_SECRET=DDDDD
+CONSUMER_KEY=AAAA
+CONSUMER_SECRET=BBBBBB
 ```
 
 Make sure you don't have spaces.
