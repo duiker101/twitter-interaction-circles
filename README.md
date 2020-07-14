@@ -7,7 +7,7 @@ Originally from [Twopcharts](https://twopcharts.com/) it has been making the rou
 I believe this is a great opportunity for a project to learn from. 
 The concept is easy and straightforward but the realization encompasses a lot of concepts.
 
-You can read more about the realization of this project on the [HackerTyper Blog](https://blog.hackertyper.net/post/twitter-interaction-circles-guide/)
+You can read more about the realization of this project on the [HackerTyper Blog](https://blog.hackertyper.net/post/twitter-interaction-circles-guide/).
 
 ## Installation
 ```shell script
