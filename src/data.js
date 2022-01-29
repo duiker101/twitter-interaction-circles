@@ -1,5 +1,7 @@
 const {getTimeline, getLiked, getAvatars} = require("./api");
 
+const forbiddenUsers = ["lviehler","erzengelheiner"];
+
 /**
  * A small function that records an interaction.
  * If a user already exists in the interactions object, increment the count for the specific type.
@@ -35,7 +37,8 @@ function countReplies(interactions, timeline, screen_name) {
 	for (const post of timeline) {
 		if (
 			!!post.in_reply_to_user_id_str &&
-			post.in_reply_to_screen_name.toLowerCase() !== screen_name
+			post.in_reply_to_screen_name.toLowerCase() !== screen_name &&
+			!forbiddenUsers.includes(post.in_reply_to_screen_name.toLowerCase())
 		) {
 			addRecord(
 				interactions,
@@ -60,7 +63,8 @@ function countRetweets(interactions, timeline, screen_name) {
 		if (
 			post.retweeted_status &&
 			post.retweeted_status.user &&
-			post.retweeted_status.user.screen_name.toLowerCase() !== screen_name
+			post.retweeted_status.user.screen_name.toLowerCase() !== screen_name &&
+			!forbiddenUsers.includes(post.retweeted_status.user.screen_name.toLowerCase())
 		) {
 			addRecord(
 				interactions,
@@ -80,7 +84,9 @@ function countRetweets(interactions, timeline, screen_name) {
  */
 function countLikes(interactions, likes, screen_name) {
 	for (const post of likes) {
-		if (post.user.screen_name.toLowerCase() !== screen_name) {
+		if (post.user.screen_name.toLowerCase() !== screen_name &&
+			!forbiddenUsers.includes(post.user.screen_name.toLowerCase())
+		) {
 			addRecord(
 				interactions,
 				post.user.screen_name,

@@ -32,7 +32,7 @@ async function main() {
 
 	// fetch the information of the logged in user
 	// instead of getMe you could replace it with another method to get a third user to generate their circles
-	const user = await getUser("WHATEVER_USERNAME_YOU_WANT");
+	const user = await getUser(process.env.USER_NAME);
 
 	// this is how many users we will have for each layer from the inside out
 	const layers = [8, 15, 26];
