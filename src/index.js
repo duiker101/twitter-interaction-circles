@@ -19,6 +19,15 @@ async function main() {
 		consumer_key: process.env.CONSUMER_KEY,
 		consumer_secret: process.env.CONSUMER_SECRET,
 	});
+	const userName = process.env.USERNAME;
+	if (!userName) console.error("No User-Name defined in Environment (Variable 'USERNAME' needed for now)");
+	let usersToIgnore = new Array(0);
+	if(!process.env.IGNORED_USERS) {
+		usersToIgnore = process.env.IGNORED_USERS.split(',');
+	} else {
+		console.warn("No Ignored User List found (Environment: IGNORED_USERS=string1,string2,...), " +
+			"Use empty Array (nothing will be ignored)");
+	}
 
 	// Use the previous client to fetch the bearer token
 	// This method gives you an application-only token specifically for read-only access to public information.
@@ -32,13 +41,13 @@ async function main() {
 
 	// fetch the information of the logged in user
 	// instead of getMe you could replace it with another method to get a third user to generate their circles
-	const user = await getUser(process.env.USER_NAME);
+	const user = await getUser(userName);
 
 	// this is how many users we will have for each layer from the inside out
 	const layers = [8, 15, 26];
 
 	// fetch the interactions
-	const data = await getInteractions(user.screen_name.toLowerCase(), layers);
+	const data = await getInteractions(user.screen_name.toLowerCase(), layers, usersToIgnore);
 
 	// render the image
 	await render([

@@ -1,7 +1,5 @@
 const {getTimeline, getLiked, getAvatars} = require("./api");
 
-const forbiddenUsers = ["lviehler","erzengelheiner"];
-
 /**
  * A small function that records an interaction.
  * If a user already exists in the interactions object, increment the count for the specific type.
@@ -32,13 +30,14 @@ function addRecord(interactions, screen_name, user_id, type) {
  * @param interactions
  * @param timeline
  * @param screen_name
+ * @param ignoredUsers
  */
-function countReplies(interactions, timeline, screen_name) {
+function countReplies(interactions, timeline, screen_name, ignoredUsers) {
 	for (const post of timeline) {
 		if (
 			!!post.in_reply_to_user_id_str &&
 			post.in_reply_to_screen_name.toLowerCase() !== screen_name &&
-			!forbiddenUsers.includes(post.in_reply_to_screen_name.toLowerCase())
+			!ignoredUsers.includes(post.in_reply_to_screen_name.toLowerCase())
 		) {
 			addRecord(
 				interactions,
@@ -57,14 +56,15 @@ function countReplies(interactions, timeline, screen_name) {
  * @param interactions
  * @param timeline
  * @param screen_name
+ * @param ignoredUsers
  */
-function countRetweets(interactions, timeline, screen_name) {
+function countRetweets(interactions, timeline, screen_name, ignoredUsers) {
 	for (const post of timeline) {
 		if (
 			post.retweeted_status &&
 			post.retweeted_status.user &&
 			post.retweeted_status.user.screen_name.toLowerCase() !== screen_name &&
-			!forbiddenUsers.includes(post.retweeted_status.user.screen_name.toLowerCase())
+			!ignoredUsers.includes(post.retweeted_status.user.screen_name.toLowerCase())
 		) {
 			addRecord(
 				interactions,
@@ -81,11 +81,12 @@ function countRetweets(interactions, timeline, screen_name) {
  * @param interactions
  * @param likes
  * @param screen_name
+ * @param ignoredUsers
  */
-function countLikes(interactions, likes, screen_name) {
+function countLikes(interactions, likes, screen_name, ignoredUsers) {
 	for (const post of likes) {
 		if (post.user.screen_name.toLowerCase() !== screen_name &&
-			!forbiddenUsers.includes(post.user.screen_name.toLowerCase())
+			!ignoredUsers.includes(post.user.screen_name.toLowerCase())
 		) {
 			addRecord(
 				interactions,
@@ -97,9 +98,10 @@ function countLikes(interactions, likes, screen_name) {
 	}
 }
 
-module.exports = async function getInteractions(screen_name, layers) {
+module.exports = async function getInteractions(screen_name, layers, usersToIgnore) {
 	const timeline = await getTimeline(screen_name);
 	const liked = await getLiked(screen_name);
+	const ignoredUsers = usersToIgnore;
 
 	/**
 	 * This is the main place where we are going to keep our data as we process it.
@@ -114,9 +116,9 @@ module.exports = async function getInteractions(screen_name, layers) {
 	 */
 	const interactions = {};
 
-	countReplies(interactions, timeline, screen_name);
-	countRetweets(interactions, timeline, screen_name);
-	countLikes(interactions, liked, screen_name);
+	countReplies(interactions, timeline, screen_name, ignoredUsers);
+	countRetweets(interactions, timeline, screen_name, ignoredUsers);
+	countLikes(interactions, liked, screen_name, ignoredUsers);
 
 	const tally = [];
 
